@@ -1,0 +1,44 @@
+version: '3'
+services:
+  php:
+    build:
+      context: ./php
+    volumes:
+      - ./code:/var/www/html
+    ports:
+      - "8000:80"
+    depends_on:
+      - mysql
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www
+      - ./nginx.conf:/etc/nginx/conf.d/docker-nginx.conf
+  mysql:
+    build: ./mysql
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: dev_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - 13314:3306
+    volumes:
+      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ./log/mysql:/var/log/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    # environment:
+    #   PMA_USER: test
+    links:
+      - mysql:db
+    ports:
+      - 4000:80
+    volumes:
+      - ./phpmyadmin/sessions:/sessions
