@@ -8,12 +8,15 @@ docker-compose up -d
 ```
 
 # Web
-0.0.0.0:8000
-
-# phpMyAdmin
-0.0.0.0:4000
 
 ```
+URL : 0.0.0.0
+```
+
+# phpMyAdmin
+
+````
+URL : 0.0.0.0:4000
 user : root
 pass: rootpassword
 ```
